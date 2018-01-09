@@ -1,0 +1,13 @@
+matrix:
+    include:
+        language: python
+        python:
+            - 3.4
+            - 3.5
+            - 3.6
+        before_script:
+            - cd backend
+        install:
+            - pip install -r requriements.txt
+        script:
+            - python manager.py test
