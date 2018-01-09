@@ -1,7 +1,7 @@
 import datetime
-from src.models import db
+from src.models import db, BaseModel
 
-class Task(db.Model):
+class Task(db.Model, BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     status = db.Column(db.Boolean, default=False)

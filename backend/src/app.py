@@ -1,6 +1,9 @@
+import json
 from flask import Flask
+from flask_restful import Resource, Api, reqparse
 
 from src.models import db
+from src.models.task import Task
 from src.config import config_app
 
 def create_app():
@@ -9,8 +12,41 @@ def create_app():
     config_app(app)
     db.init_app(app)
 
-    @app.route('/')
-    def index():
-        return 'TODO is running'
+    api = Api(app)
+
+    def abort_if_task_doesnt_exist(task_id):
+        counter = Task.query.filter_by(id=task_id).count()
+        if counter == 0:
+            abort(404, message="Task {} doesn't exist".format(task_id))
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('name')
+    parser.add_argument('status')
+
+    class TaskApi(Resource):
+        def get(self, task_id):
+            abort_if_task_doesnt_exist(task_id)
+            task = Task.query.filter_by(id=task_id).first()
+            return json.dumps(task.as_dict())
+
+        def delete(self, task_id):
+            abort_if_task_doesnt_exist(task_id)
+            task = Task.query.filter_by(id=task_id).first()
+            db.session.delete(task)
+            db.commit()
+            return '', 204
+
+        def put(self, task_id):
+            args = parser.parse_args()
+            task = Task()
+            task.name = args['name']
+            task.status = args['status']
+
+            db.sessoin.add(task)
+            db.session.commit()
+
+            return json.dumps(task.as_dict()), 201
+
+    api.add_resource(TaskApi, '/<string:task_id>')
 
     return app
