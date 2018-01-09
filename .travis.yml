@@ -1,15 +1,15 @@
 matrix:
   include:
-    language: python
-    python:
-      - "3.4"
-      - "3.5"
-      - "3.6"
-    before_install:
-      - cd backend
-    install:
-      - pip install -r requriements.txt
-    before_script:
-      - cd backend
-    script:
-      - python manager.py test
+    - language: python
+      python:
+        - "3.4"
+        - "3.5"
+        - "3.6"
+      before_install:
+        - cd backend
+      install:
+        - pip install -r requriements.txt
+      before_script:
+        - cd backend
+      script:
+        - python manager.py test
