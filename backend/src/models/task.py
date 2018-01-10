@@ -6,4 +6,4 @@ class Task(db.Model, BaseModel):
     name = db.Column(db.String(128))
     status = db.Column(db.Boolean, default=False)
     create_time = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    finish_time = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    finish_time = db.Column(db.DateTime, default=None)

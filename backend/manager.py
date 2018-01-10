@@ -20,6 +20,7 @@ manager.add_command('runserver', Server(host="0.0.0.0"))
 manager.add_command('db', MigrateCommand)
 
 def init_db():
+    db.drop_all()
     db.create_all()
 
 @manager.command
