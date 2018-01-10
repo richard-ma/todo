@@ -4,5 +4,6 @@ from sqlalchemy.orm import relationship
 db = SQLAlchemy()
 
 class BaseModel(object):
-    def as_dict(self):
+    @property
+    def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -29,10 +29,10 @@ def exampleData():
 
     tasks = list()
 
-    task = Task()
-    task.name = 'taskname'
-    task.status = False
-    tasks.append(task)
+    for idx in range(1, 100):
+        task = Task()
+        task.name = 'taskname{}'.format(idx)
+        tasks.append(task)
 
     for task in tasks:
         db.session.add(task)
