@@ -1,5 +1,3 @@
-import json
-import bson
 from flask import jsonify
 from flask_restful import Resource, reqparse, abort
 
@@ -64,3 +62,13 @@ def create_api(api):
             return '', 201
 
     api.add_resource(TaskResource, '/task', '/task/<string:task_id>')
+
+    class TaskListResource(Resource):
+        def get(self, offset=0):
+            task = Task.query.order_by(Task.id.desc()).slice(offset, offset).first()
+            if task == None:
+                abort(404, message='Task does not exist.')
+
+            return jsonify(task.to_dict)
+
+    api.add_resource(TaskListResource, '/tasks', '/tasks/<int:offset>')
