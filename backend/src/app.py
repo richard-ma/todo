@@ -1,5 +1,4 @@
-import json
-from flask import Flask
+from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 
 from src.models import db
@@ -27,7 +26,7 @@ def create_app():
         def get(self, task_id):
             abort_if_task_doesnt_exist(task_id)
             task = Task.query.filter_by(id=task_id).first()
-            return json.dumps(task.as_dict())
+            return jsonify(task.as_dict())
 
         def delete(self, task_id):
             abort_if_task_doesnt_exist(task_id)
@@ -45,8 +44,8 @@ def create_app():
             db.sessoin.add(task)
             db.session.commit()
 
-            return json.dumps(task.as_dict()), 201
+            return jsonify(task.as_dict()), 201
 
-    api.add_resource(TaskApi, '/<string:task_id>')
+    api.add_resource(TaskApi, '/task/<string:task_id>')
 
     return app
