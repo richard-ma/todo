@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from flask_restful import Resource, Api, reqparse
+from flask_restful import Resource, Api, reqparse, abort
 
 from src.models import db
 from src.models.task import Task
@@ -32,7 +32,7 @@ def create_app():
             abort_if_task_doesnt_exist(task_id)
             task = Task.query.filter_by(id=task_id).first()
             db.session.delete(task)
-            db.commit()
+            db.session.commit()
             return '', 204
 
         def put(self, task_id):
